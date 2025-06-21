@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from locators import Locators
+from urls import *
 
 @pytest.fixture()
 def driver():
@@ -11,26 +12,6 @@ def driver():
     driver.maximize_window()
     yield driver
     driver.quit()
-
-@pytest.fixture()
-def main_page_url():
-    return "https://stellarburgers.nomoreparties.site/"
-
-@pytest.fixture()
-def register_page_url():
-    return "https://stellarburgers.nomoreparties.site/register"
-
-@pytest.fixture()
-def login_page_url():
-    return "https://stellarburgers.nomoreparties.site/login"
-
-@pytest.fixture()
-def account_page_url():
-    return "https://stellarburgers.nomoreparties.site/account"
-
-@pytest.fixture()
-def forgot_pwd_page_url():
-    return "https://stellarburgers.nomoreparties.site/forgot-password"
 
 @pytest.fixture()
 def user():
@@ -44,8 +25,8 @@ def rnd_user():
     return new_user
 
 @pytest.fixture()
-def log_in(request, driver, user, main_page_url):
-    driver.get(main_page_url)
+def log_in(request, driver, user):
+    driver.get(MAIN_PAGE_URL)
     email, password = user
 
     WebDriverWait(driver, 5).until(

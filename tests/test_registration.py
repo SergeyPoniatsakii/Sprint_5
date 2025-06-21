@@ -1,86 +1,89 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from locators import Locators
+from urls import *
 
-def test_new_user_registration_successful(driver, main_page_url, rnd_user):
-    driver.get(main_page_url)
+class TestRegistration:
 
-    WebDriverWait(driver, 5).until(
-        EC.element_to_be_clickable(Locators.PERSONAL_ACCOUNT_BTN)
-    ).click()
+    def test_new_user_registration_successful(self, driver, rnd_user):
+        driver.get(MAIN_PAGE_URL)
 
-    WebDriverWait(driver, 3).until(
-        EC.element_to_be_clickable(Locators.LOGIN_REGISTRATION_BTN)
-    ).click()
+        WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable(Locators.PERSONAL_ACCOUNT_BTN)
+        ).click()
 
-    test_user = rnd_user
+        WebDriverWait(driver, 3).until(
+            EC.element_to_be_clickable(Locators.LOGIN_REGISTRATION_BTN)
+        ).click()
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
-    ).send_keys(test_user)
+        test_user = rnd_user
 
-    driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
+        ).send_keys(test_user)
 
-    driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
+        driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
 
-    # Нажимаем на кнопку "Зарегистрироваться"
-    driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
+        driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
 
-    WebDriverWait(driver, 5).until(
-        EC.url_to_be("https://stellarburgers.nomoreparties.site/login")
-    )
-    assert driver.current_url == "https://stellarburgers.nomoreparties.site/login"
+        # Нажимаем на кнопку "Зарегистрироваться"
+        driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
 
-    driver.quit()
+        WebDriverWait(driver, 5).until(
+            EC.url_to_be("https://stellarburgers.nomoreparties.site/login")
+        )
+        assert driver.current_url == "https://stellarburgers.nomoreparties.site/login"
 
-def test_new_user_registration_invalid_pwd (driver, register_page_url, rnd_user):
-    driver.get(register_page_url)
+        driver.quit()
 
-    test_user = rnd_user
+    def test_new_user_registration_invalid_pwd (self, driver, rnd_user):
+        driver.get(REGISTER_PAGE_URL)
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
-    ).send_keys(test_user)
+        test_user = rnd_user
 
-    driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
+        ).send_keys(test_user)
 
-    driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys('short')
+        driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
 
-    driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
+        driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys('short')
 
-    assert driver.find_element(*Locators.UNFORMATTED_PWD).is_displayed()
-    driver.quit()
+        driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
 
-def test_new_user_registration_empty_name (driver, register_page_url, rnd_user):
-    driver.get(register_page_url)
+        assert driver.find_element(*Locators.UNFORMATTED_PWD).is_displayed()
+        driver.quit()
 
-    test_user = rnd_user
+    def test_new_user_registration_empty_name (self, driver, rnd_user):
+        driver.get(REGISTER_PAGE_URL)
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
-    ).send_keys('')
+        test_user = rnd_user
 
-    driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
+        ).send_keys('')
 
-    driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
+        driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user)
 
-    driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
+        driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
 
-    assert driver.current_url == "https://stellarburgers.nomoreparties.site/register"
+        driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
 
-def test_new_user_registration_email_unformatted (driver, register_page_url, rnd_user):
-    driver.get(register_page_url)
+        assert driver.current_url == "https://stellarburgers.nomoreparties.site/register"
 
-    test_user = rnd_user
+    def test_new_user_registration_email_unformatted (self, driver, rnd_user):
+        driver.get(REGISTER_PAGE_URL)
 
-    WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
-    ).send_keys(test_user)
+        test_user = rnd_user
 
-    driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user.replace("@", "", 1))
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(Locators.REGISTRATION_NAME_FLD)
+        ).send_keys(test_user)
 
-    driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
+        driver.find_element(*Locators.REGISTRATION_EMAIL_FLD).send_keys(test_user.replace("@", "", 1))
 
-    driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
+        driver.find_element(*Locators.REGISTRATION_PASSWORD_FLD).send_keys(test_user)
 
-    assert driver.current_url == "https://stellarburgers.nomoreparties.site/register"
+        driver.find_element(*Locators.REGISTRATION_SUBMIT_BTN).click()
+
+        assert driver.current_url == "https://stellarburgers.nomoreparties.site/register"
